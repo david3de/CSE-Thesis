@@ -1,0 +1,127 @@
+%% uctest.tex 11/3/94
+%% Copyright (C) 1988-2004 Daniel Gildea, BBF, Ethan Munson.
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2003/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+% 
+% The Current Maintainer of this work is Daniel Gildea.
+
+\documentclass[12pt, draft]{ucthesis}
+\def\dsp{\def\baselinestretch{2.0}\large\normalsize}
+\dsp
+\begin{document}
+
+% Declarations for Front Matter
+
+\title{Children and IoT Devices}
+\author{Yifu Lang}
+\degreeyear{2021}
+\degreemonth{June}
+\degree{MASTER OF SCIENCE}
+\chair{Professor Alvaro Cardenas}
+\committeememberone{Professor Darrell Long}
+\committeemembertwo{Professor David Harrison}
+\numberofmembers{3} %% (including chair) possible: 3, 4, 5, 6
+\deanlineone{Quentin Williams}
+\deanlinetwo{Acting Vice Provost and Dean of Graduate Studies}
+\deanlinethree{}
+\field{Computer Science and Engineering}
+\campus{Santa Cruz}
+
+\begin{frontmatter}
+
+\maketitle
+\copyrightpage
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+% ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+In an increasingly technological world, society has found an astonishing number of ways to integrate the Internet into day-to-day devices. For example, Google and Amazon have extensive development in smart home devices and toy companies have been developing smart toys for children. However, as a newly blooming technology, the security aspects of IoT are still mostly unexplored.
+
+With the recent increase in popularity of the Internet of Things, many companies quickly developed new devices using this technology. While taking advantage of this technology has yielded many benefits and conveniences in the past few years, the glaring issue of security has not been properly addressed. We have seen many recent attacks on children through IoT devices, mainly baby monitors and nest cameras. Additionally, while security mechanisms do exist and are available for use, general users without a technical background may not see the risks as something worth putting effort into mitigating. In this thesis, we address this issue and provide a solution to persuade more users to be wary of the risks at hand when ignoring proper attention to the protection of their data and privacy.
+    
+\end{abstract}
+
+% DEDICATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{dedication}
+\null\vfil
+{\large
+\begin{center}
+To my friends, family,\\\vspace{12pt}
+and all who have been there for me through rough times.\\\vspace{12pt}
+\end{center}}
+\vfil\null
+\end{dedication}
+
+% ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{acknowledgements}
+I begin by extending my most sincere gratitude for my thesis advisor, Alvaro Cardenas. 
+
+I would also like to thank my 
+
+\end{acknowledgements}
+
+\end{frontmatter}
+
+% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introduction}
+
+Every dissertation should have an introduction.  You might not realize
+it, but the introduction should introduce the concepts, backgrouand,
+and goals of the dissertation.
+
+\begin{table}
+\begin{tabular}{|l|r|}
+  \hline 
+Title & Author \\
+\hline
+War And Peace & Leo Tolstoy \\
+The Great Gatsby & F. Scott Fitzgerald \\ \hline
+\end{tabular}
+\caption{A normalsize table.  There has been a complaint that table
+captions are not single-spaced.  This is odd because the code
+indicates that they should be.}
+\end{table}
+
+\begin{table}
+\caption{A small table.}
+\begin{scriptsizetabular}{|l|r|}
+  \hline 
+Title & Author \\
+\hline
+War And Peace & Leo Tolstoy \\
+The Great Gatsby & F. Scott Fitzgerald \\ \hline
+\end{scriptsizetabular}
+\end{table}
+
+\chapter{Previous Work}
+
+Some other research was once performed.
+
+\begin{figure}
+\caption{A first figure.}
+\end{figure}
+
+\begin{figure}
+\caption{A second figure.}
+\end{figure}
+
+\chapter{Conclusion}
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{uctest}
+
+\appendix
+
+\end{document}
