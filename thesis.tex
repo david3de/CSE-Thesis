@@ -44,15 +44,14 @@
 \listoffigures
 \listoftables
 
-% ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-In an increasingly technological world, society has found an astonishing number of ways to integrate the Internet into day-to-day devices. For example, Google and Amazon have extensive development in smart home devices and toy companies have been developing smart toys for children. However, as a newly blooming technology, the security aspects of IoT are still mostly unexplored.
+With the recent increase in popularity of the Internet of Things, many companies quickly developed new devices using this technology to stake a claim in a blooming industry. While taking advantage of this technology has yielded many benefits and conveniences in the past few years, the glaring issue of security has not been properly addressed. We have seen many recent attacks on children through IoT devices, and while security mechanisms do exist and are available for use, general users without a technical background may not see the risks as something worth putting effort into mitigating. 
 
-With the recent increase in popularity of the Internet of Things, many companies quickly developed new devices using this technology. While taking advantage of this technology has yielded many benefits and conveniences in the past few years, the glaring issue of security has not been properly addressed. We have seen many recent attacks on children through IoT devices, mainly baby monitors and nest cameras. Additionally, while security mechanisms do exist and are available for use, general users without a technical background may not see the risks as something worth putting effort into mitigating. In this thesis, we address this issue and provide a solution to persuade more users to be wary of the risks at hand when ignoring proper attention to the protection of their data and privacy.
-    
+In this thesis, we perform a network analysis on some of the existing products available on the market and collect survey data from parents and their understanding of IoT technologies. We then address the issues in IoT security and provide a solution to persuade more users to be wary of the risks at hand when ignoring proper attention to the protection of their data and privacy. 
 \end{abstract}
 
-% DEDICATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DEDICATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{dedication}
 \null\vfil
 {\large
@@ -63,50 +62,31 @@ and all who have been there for me through rough times.\\\vspace{12pt}
 \vfil\null
 \end{dedication}
 
-% ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{acknowledgements}
-I begin by extending my most sincere gratitude for my thesis advisor, Professor Alvaro Cardenas. By guiding me through 
+I begin by giving my most sincere gratitude for my thesis advisor, Professor Alvaro Cardenas, as someone who has accompanied me throughout the entire research process and always provided further readings and resources for this thesis.
 
-I would also like to thank my 
+I would also like to thank Professor Su-hua Wang for guiding me through the process of survey and data collection. Additionally, I extend my gratitude to Elizabeth Goldman, Binaisha Datoor, Adam Ernst, and the entire Baby Lab at UCSC for helping me tread unfamiliar territories in the realm of research.
+
+I want to thank Professor Darrell Long and Professor David Harrison as reading committee chairs for this thesis, and as some of the most influential professors I have had an opportunity to work with in my time at UCSC.
+
+Finally, I want to acknowledge my SASE family, who have inspired me to go above and beyond in my career and have always been a shoulder to lean on when times are tough.
 
 \end{acknowledgements}
 
 \end{frontmatter}
 
-% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
+In an increasingly technological world, society has found an astonishing number of ways to integrate the Internet into day-to-day devices. From smartphones to wearable technology, all devices that are connected to the Internet are encapsulated under the Internet of Things (IoT). In recent history, modern companies have been finding different ways to incorporate this realm into households; for example, Google and Amazon have extensive development in smart home devices and toy companies have been developing smart toys for children. Overall, the normalization of IoT has enabled massive growth in recent years. Reports have shown that the number of existing Internet-connected devices is projected to grow to 14.7 billion in 2023, 48\% of which accounts for connected home applications, such as smart home devices and security cameras. \cite{cisco}.
 
-Every dissertation should have an introduction.  You might not realize
-it, but the introduction should introduce the concepts, backgrouand,
-and goals of the dissertation.
+However, as a newly blooming technology, the security aspects of these devices are still mostly unexplored. 
 
-\begin{table}
-\begin{tabular}{|l|r|}
-  \hline 
-Title & Author \\
-\hline
-War And Peace & Leo Tolstoy \\
-The Great Gatsby & F. Scott Fitzgerald \\ \hline
-\end{tabular}
-\caption{A normalsize table.  There has been a complaint that table
-captions are not single-spaced.  This is odd because the code
-indicates that they should be.}
-\end{table}
+In the remainder of this thesis, Chapter 2 begins with exploring the backgrounds of IoT technologies and an analysis of end-user security. Chapter 3 consists of previous works that are related to our research, in which we build upon. Chapter 4 explains the methodology of our research process and provides details on our data collection and network analysis. Chapter 5 and 6 go into detail on our survey data and technical data, respectively. Finally, chapter 7 concludes our research by recommending security mechanisms to better protect a user's data.
 
-\begin{table}
-\caption{A small table.}
-\begin{scriptsizetabular}{|l|r|}
-  \hline 
-Title & Author \\
-\hline
-War And Peace & Leo Tolstoy \\
-The Great Gatsby & F. Scott Fitzgerald \\ \hline
-\end{scriptsizetabular}
-\end{table}
-
-\chapter{Previous Work}
-
-Some other research was once performed.
+% BACKGROUND %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Background}
+We began our investigation 
 
 \begin{figure}
 \caption{A first figure.}
@@ -116,6 +96,29 @@ Some other research was once performed.
 \caption{A second figure.}
 \end{figure}
 
+% RELATED WORK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Related Work}
+
+
+% METHODOLOGY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Methodology}
+Our research delves into two separate fields. We explore both end-user psychology through survey data as well as the technical aspects of existing IoT products that are currently available on the market.
+
+\section{End-User Mental Model}
+
+
+\section{Device Taxonomy}
+On the technical side, we perform a network analysis on 
+
+% MENTAL MODEL %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{End User Mental Model}
+
+
+% TAXONOMY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Device Taxonomy}
+
+
+% CONCLUSION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Conclusion}
 
 \nocite{*}
