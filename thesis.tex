@@ -96,25 +96,43 @@ In the remainder of this thesis, Chapter \ref{ch:background} begins with explori
 We begin our investigation by reviewing existing issues found in IoT devices and children's interactions on the Internet.
 
 \section{End-User Perceptions}
-While most Internet users understand its inherent risks, it can often be difficult for less experienced users to follow recommended security practices in order to keep their data safe; even the most sophisticated security mechanisms are useless if a user refuses to employ them. Oftentimes, reinforcement learning helps individuals develop habits and pattern recognition, but a lack of concrete results deters these practices. For example, positive outcomes in good cybersecurity awareness include not having one's data breached and not being the target of an attack. Negative outcomes in bad cybersecurity practices include exposure of data and loss of resources, which may not occur at all. Research has shown that due to a lack of tangible results in both positive and negative reinforcement in cybersecurity practices, it can often be hard to motivate their integration \cite{west:psychology}.
+While most Internet users understand its inherent risks, it can often be difficult for less experienced users to follow recommended security practices in order to keep their data safe; even the most sophisticated security mechanisms are useless if a user refuses to employ them. Oftentimes, reinforcement learning helps individuals develop habits and pattern recognition, but a lack of concrete results deters these practices. For example, positive outcomes in good cybersecurity awareness include \textit{not} having one's data breached and \textit{not} being the target of an attack. Negative outcomes in bad cybersecurity practices include exposure of data and loss of resources, which may not even occur at all. Research has shown that due to a lack of tangible results in both positive and negative reinforcement in cybersecurity practices, it can often be hard to motivate their integration \cite{west:psychology}.
 
 We aim to model, in general, a parent's perception of modern IoT devices. Previous research conducted by Zeng et al. \cite{zeng:enduser} has shown that smart home users with a technical background tended to better understand cloud infrastructure and how data is collected from a device and transported over a network. Additionally, these users have also shown more concern about the privacy of the data collected by these smart home devices. Inversely, users with less experience with technology tend to show less concern for their data and show little to no understanding of their device's network infrastructure. 
 
-However, a separate study by McReynolds et al. \cite{mcreynolds:toysthatlisten} that parents show more concern for data privacy when their children are involved. When asked questions regarding smart toy and smart device privacy, many parents showed concern for data collection and parental controls, while some of the older children inteviewed expressed concern for a lack of privacy from their own parents.
+However, a separate study by McReynolds et al. \cite{mcreynolds:toysthatlisten} shows that parents convey more concern for data privacy when their children are involved. When asked questions regarding smart toy and smart device privacy, many parents showed concern for data collection and parental controls, while some of the older children inteviewed expressed concern for a lack of privacy from their own parents.
 
-Our investigation may show that parental care plays a role in cybersecurity awareness, which affects a parent's likelihood to purchase and use IoT devices. For our research, our goal is to build a generalizable mental model that encapsulates parents' privacy concerns for their children, understanding of cloud networks, and willingness to allow their children to use a smart device. 
+This investigation may show that parental care plays a role in cybersecurity awareness, which affects a parent's likelihood to purchase and use IoT devices. For our research, our goal is to build a generalizable mental model that encapsulates parents' privacy concerns for their children, understanding of cloud networks, and willingness to allow their children to use a smart device. 
 
 \section{IoT Security Standards}
-Although some companies 
+Smart devices and IoT may open up attack vectors for hackers and other adversaries to take advantage of. Consumers often trust developers and companies to implement sound security mechanisms, or simply are not aware of the importance of their implementation. Unfortunately, there have been many reports of attacks on insufficiently secure devices and applications. For example, an article had found that smart cameras and baby monitors have been at risk due to a lack of security in the mobile applications required to use them. Without mechanisms such as Multi-factored Authentication (MFA), hackers have been able to access the cameras using username-password combinations that were stolen and sold on the Internet \cite{wp:camera}. This process is coined \textit{credential stuffing}.
 
-\section{Protecting Children}
-Under United States law, children's data is heavily protected under the Children's Online Privacy Protection Act (COPPA). When providing a service or product that is connected to the Internet to children under the age 13, developers are legally required to obtain parental permission and inform users of data collection. Data collection must be kept to a bare minimum for a product to function and collected data must be available for review and deletion.
+Dophin attacks, another vector made possible by voice-controlled assistants (VCA), involve ultrasonic sounds inaudible to the human ear that can activate the VCAs built into many IoT devices today \cite{dolphin}. Through dolphin attacks, hackers can sometimes access private data and trigger features unintended by the owner of the device. Attacks like these can often be difficult to predict and prevent due to their invisibility.
 
-While meeting COPPA standards    \cite{reyes:coppa}
+Other studies have found hardware issues in devices that could compromise user privacy and data. A study by Streiff et al. \cite{streiff:overpowered} shows that a smart toy by Fischer conceals an Android tablet motherboard. Researchers found that root access to the board was unprotected and that it was easy to gain access to both the camera and microphone built into the toy; it is entirely possible for an attacker to take advantage of this poor design to spy on other consumers.
 
-% write about this
-\cite{le:skillbot}
+Evidently, the industry has yet to fully understand each vulnerability that resulted through the widespread usage of IoT technologies. Our research aims to analyze two IoT products and develop a threat model for both, looking for vulnerabilities in their mobile applications, networks, and hardware.
 
+
+\section{Children's Protection}
+Under United States law, children's personal identifiable information is heavily protected under the Children's Online Privacy Protection Act (COPPA). When providing a service or product that is connected to the Internet to children under the age 13, developers are legally required to obtain parental permission and inform users of data collection. Data collection must be kept to a bare minimum for a product to function and collected data must be available for review and deletion.
+
+Ever since COPPA was passed, many tools and resources were created to help developers implement extra measures for protecting children's data. For example, some software development kits (SDK) provide extra options to limit the kinds of data an application is able to collect \cite{reyes:coppa}, and Samet Privacy's kidSAFE\textsuperscript{\textregistered} Seal Program (fig. \ref{fig:kidsafe}) verifies the COPPA-compliance of devices and applications.
+
+While meeting COPPA standards is a legal requirement for any Internet-connected product available in the United States, research has shown that developers often neglect doing so. Reyes et al. \cite{reyes:coppa} have found that out of the top 5,885 children's mobile applications on the Google Play Store analyzed in their study, a majority of them are potentially violating COPPA standards due to misuses of mobile SDKs. This discovery shows that although there are laws in place to ensures the safety of children's data, this industry has yet to fully accomodate for the requirements set through these laws. 
+
+Another study conducted by Le et al. \cite{le:skillbot} delves into the safety of Amazon's VCA Alexa, which found that many children's built-in applications, called \textit{skills}, harbored inappropriate contents and often collected too much data for COPPA-compliance. The study also found that many parents had concerns regarding the content of these skills and often did not take full advantage of parental control features.
+
+\begin{figure}
+    \centering
+    \label{fig:kidsafe}
+    \includegraphics[width=0.3\textwidth]{kidsafe1.png}
+    \includegraphics[width=0.3\textwidth]{kidsafe2.png}
+    \includegraphics[width=0.3\textwidth]{kidsafe3.png}
+    \caption{The kidSAFE seal of certification helps parents identify Internet-connected products that are verifiably COPPA-compliant.}
+\end{figure}
+
+With the data and privacy of children at risk, it has become ever so important for developers to be wary of what data their products collect and what content is available to children. Finally, our study aims to find better methods of data collection and suggest implementing several mechanisms that can help ensure children's safety. 
 
 % METHODOLOGY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Methodology}
@@ -122,16 +140,21 @@ While meeting COPPA standards    \cite{reyes:coppa}
 Our research delves into two separate fields. We explore both end-user psychology through survey data as well as the technical aspects of existing IoT products that are currently available on the market.
 
 \section{End-User Mental Model}
-To build a generalizable mental model on parents and IoT devices, 
+To build a generalizable mental model on parents and IoT devices, we ran a survey (Appendix \ref{app:questions}) to better gauge the experiences and opinions of parents concerning smart devices designed for children. We ask questions regarding their experience with technology, thoughts on smart devices and smart toys, privacy practices, and demographics. Additionally, we show the subjects short videos demonstrating two smart devices designed for children and ask about their thoughts and concerns about them.
+
+Our survey was conducted on parents of children aged 6 or younger. Our research is app
 
 \section{Device Taxonomy}
 In the technical aspects of our research, we look into two smart devices designed for children that are available on the market. 
 
 \subsection{Network Analysis}
-We inquire the security standards of these devices to 
+In order to develop threat models for our devices, we investigate the security standards of these devices. 
+
+\subsection{}
 
 
 \begin{figure}
+    \label{fig:experiment}
     \includegraphics[width=\textwidth]{experiment.jpg}
     \caption{A high level overview of our experiment setup.}
 \end{figure}
@@ -144,7 +167,17 @@ We inquire the security standards of these devices to
 % TAXONOMY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Device Taxonomy}
 \label{ch:taxonomy}
+We perform network analyses on two separate products: Amazon's Echo Dot for Kids and the Roybi Robot, both of which are smart devices designed for children's use. In our analyses, we pay attention to each feature the devices offer and how they communicate with their cloud services and the parent's mobile device through its designated application.
 
+\section{Amazon Echo Dot for Kids}
+
+
+\section{Roybi Robot}
+\begin{figure}
+    \label{fig:udp}
+    \includegraphics[width=\textwidth]{udp.jpg}
+    \caption{Roybi's camera functionality directly connects to the application on the mobile device through a socket. We have found that it contains unencrypted data.}
+\end{figure}
 
 % CONCLUSION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Conclusion}
@@ -160,6 +193,7 @@ We inquire the security standards of these devices to
 % APPENDIX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
 \chapter{Survey Questions}
+\label{app:questions}
 The following section contains the questions we ask in our survey. Some topics include experience with technology, perceptions of our subject devices, data privacy, and demographics.
 
 \begin{itemize}
