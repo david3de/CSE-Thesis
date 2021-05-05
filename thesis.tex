@@ -113,7 +113,6 @@ Other studies have found hardware issues in devices that could compromise user p
 
 Evidently, the industry has yet to fully understand each vulnerability that resulted through the widespread usage of IoT technologies. Our research aims to analyze two IoT products and develop a threat model for both, looking for vulnerabilities in their mobile applications, networks, and hardware.
 
-
 \section{Children's Protection}
 Under United States law, children's personal identifiable information is heavily protected under the Children's Online Privacy Protection Act (COPPA). When providing a service or product that is connected to the Internet to children under the age 13, developers are legally required to obtain parental permission and inform users of data collection. Data collection must be kept to a bare minimum for a product to function and collected data must be available for review and deletion.
 
@@ -125,11 +124,11 @@ Another study conducted by Le et al. \cite{le:skillbot} delves into the safety o
 
 \begin{figure}
     \centering
-    \label{fig:kidsafe}
     \includegraphics[width=0.3\textwidth]{kidsafe1.png}
     \includegraphics[width=0.3\textwidth]{kidsafe2.png}
     \includegraphics[width=0.3\textwidth]{kidsafe3.png}
     \caption{The kidSAFE seal of certification helps parents identify Internet-connected products that are verifiably COPPA-compliant.}
+    \label{fig:kidsafe}
 \end{figure}
 
 With the data and privacy of children at risk, it has become ever so important for developers to be wary of what data their products collect and what content is available to children. Finally, our study aims to find better methods of data collection and suggest implementing several mechanisms that can help ensure children's safety. 
@@ -137,27 +136,65 @@ With the data and privacy of children at risk, it has become ever so important f
 % METHODOLOGY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Methodology}
 \label{ch:methodology}
-Our research delves into two separate fields. We explore both end-user psychology through survey data as well as the technical aspects of existing IoT products that are currently available on the market.
-
-\section{End-User Mental Model}
-To build a generalizable mental model on parents and IoT devices, we ran a survey (Appendix \ref{app:questions}) to better gauge the experiences and opinions of parents concerning smart devices designed for children. We ask questions regarding their experience with technology, thoughts on smart devices and smart toys, privacy practices, and demographics. Additionally, we show the subjects short videos demonstrating two smart devices designed for children and ask about their thoughts and concerns about them.
-
-Our survey was conducted on parents of children aged 6 or younger. Our research is app
-
-\section{Device Taxonomy}
-In the technical aspects of our research, we look into two smart devices designed for children that are available on the market. 
-
-\subsection{Network Analysis}
-In order to develop threat models for our devices, we investigate the security standards of these devices. 
-
-\subsection{}
-
+Our research delves into two separate fields. First, we explore end-user psychology through survey data. On the other hand, we also delve into the technical aspects of two existing IoT products that are currently available on the market: Amazon's Echo Dot for Kids is a voice assistant smart home device with parental control and restriction features, and the Roybi Robot is a smart toy designed as a tutor for young children (fig. \ref{fig:devices}).
 
 \begin{figure}
-    \label{fig:experiment}
+    \centering
+    \includegraphics[width=0.3\textwidth]{echo.jpg}
+    \includegraphics[width=0.3\textwidth]{roybi.jpg}
+    \caption{Our research involves analysis of two smart devices designed for children: the Amazon Echo Dot for Kids and the Roybi Robot.}
+    \label{fig:devices}
+\end{figure}
+
+\section{End-User Mental Model}
+We want to understand the psychology involving, parents, IoT, and data privacy through developing a mental model.
+
+\subsection{Privacy Policy}
+Both devices presented in the survey have privacy policies to inform users of data collection and what rights the user has. Since devices designed for child use must also comply with COPPA, we can expect to see specific details regarding specific permissions granted by the parents, what data is collected, and how much control parents have over collected data. We review each device's privacy policy and compare our findings from the device taxonomy to reveal any inconsistencies in data collection. We also look into any COPPA violations that could possibly be present in the devices.
+
+\subsection{Survey}
+To build a generalizable mental model on parents and IoT devices, we ran a survey (Appendix \ref{app:questions}) to better gauge the experiences and opinions of parents concerning smart devices designed for children. We ask questions regarding their experience with technology, thoughts on smart devices and smart toys, privacy practices, and demographics. Additionally, we show the subjects short videos demonstrating two smart devices designed for children and ask about their thoughts and concerns about them. 
+
+Our survey was conducted through Qualtrics. The research was approved by the University of California, Santa Cruz Institutional Review Board (IRB) and abides by the regulation of the Office of Research Compliance Administration (ORCA). We collected no personal identifiable information except an email, which is deleted from our records as compensation is sent. Our subjects consisted of parents of children ages 6 or younger that are currently residing in the United States. We recruited participants from an existing subject pool from the Baby Lab at UCSC, as well as through word-of-mouth and email. Those who completed the survey were compensated with a \$10 Amazon gift card.
+
+Through the questions asked on the survey, we aim to model several high-level properties of parents and IoT.
+
+\subsubsection{Data Privacy}
+As discussed in chapter \ref{ch:background}, previous research has shown that smart device users that are less experienced with technology tend to show less concern for data privacy. We ask questions regarding how our subjects keep their data safe and if they have any concerns regarding data collection in Internet-connected devices. These questions help us understand which data privacy issues parents are aware of, and which issues may require additional scrutiny.
+
+\subsubsection{Cloud Infrastructure}
+We want to measure the level of understanding parents have for the cloud infrastructure of the two smart devices we present in the survey. We ask questions gauging the subjects' understanding of how data is collected through the devices, where it is stored, and how it is transferred over a cloud server. 
+
+\subsubsection{Developer Reliability}
+We also want to understand the extent to which parents trust the Internet-connected devices that are currently available on the market. We ask for the subject's opinions on the two devices presented in our research, such as what they liked or disliked about the toy and what kind of design improvements could be made. Understanding a parent's trust in children's IoT devices helps us further understand their security weaknesses and shines a light on what features parents are concerned about.
+
+\section{Device Taxonomy}
+In the technical aspects of our research, we look into two smart devices designed for children that are available on the market.
+
+\subsection{Network Analysis}
+In order to develop threat models for our devices, we investigate the security standards of these devices. Using the Internet Sharing feature on OSX, we used a Macbook as a WiFi endpoint for both devices, as well as a mobile device for the applications used to control them. The laptop connected to a router through an ethernet cable serves as a bridge between the router and our smart devices \ref{fig:experiment}. We then use Wireshark to analyze the network traffic of all of our devices. Details we are looking for include:
+
+\begin{itemize}
+    \item Frequency of packets being sent 
+    \item Total bandwidth of network traffic 
+    \item Servers the devices are in communications with 
+    \item Packet protocol
+    \item Encryption standards
+    \item Possible attack vectors
+\end{itemize}
+
+All in all, we are searching for insecure features that may either violate COPPA standards or be an exploitable security flaw.
+
+\begin{figure}
     \includegraphics[width=\textwidth]{experiment.jpg}
     \caption{A high level overview of our experiment setup.}
+    \label{fig:experiment}
 \end{figure}
+
+\subsection{Attack Vectors}
+Given the versatility of both the Echo Dot and the Roybi Robot, our research aims to find possible attack vectors for either devices. With the network analysis performed as described in the previous section, we first examine any inconsistencies with encryption protocols and packet patterns to find network exploits. We also examine each feature of both devices to observe any possible COPPA violations or privacy breaches. Finally, we test known attack vectors on the devices. 
+
+The methodology presented in this chapter results in both a mental model of parents and their children's interactions with smart devices and a threat model of the possible attacks or breaches of privacy that could occur in smart device use. We seek to compare these two models in order to recommend changes to be made for a safer IoT environment.
 
 % MENTAL MODEL %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{End User Mental Model}
@@ -174,9 +211,16 @@ We perform network analyses on two separate products: Amazon's Echo Dot for Kids
 
 \section{Roybi Robot}
 \begin{figure}
-    \label{fig:udp}
     \includegraphics[width=\textwidth]{udp.jpg}
-    \caption{Roybi's camera functionality directly connects to the application on the mobile device through a socket. We have found that it contains unencrypted data.}
+    \caption{Roybi's camera functionality directly connects to the application on the mobile device through a socket. We have found that it contains unencrypted or poorly encrypted data.}
+    \label{fig:udp}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=0.5\textwidth]{unencrypted1.png}
+    \includegraphics[width=0.5\textwidth]{unencrypted2.png}
+    \caption{A Wireshark packet capture shows that the Roybi Robot sends a UDP stream with small differences in data per packet.}
+    \label{fig:unencrypted}
 \end{figure}
 
 % CONCLUSION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
