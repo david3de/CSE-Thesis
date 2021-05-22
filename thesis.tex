@@ -12,7 +12,7 @@
 % This work has the LPPL maintenance status "maintained".
 % 
 % The Current Maintainer of this work is Daniel Gildea.
-
+\newcommand{\comment}[1]{}
 \documentclass[12pt]{ucthesis}
 \usepackage{graphicx}
 \graphicspath{ {./img} }
@@ -22,7 +22,7 @@
 
 % Declarations for Front Matter
 
-\title{Children and IoT Devices}
+\title{A Multidisciplinary Study of IoT Security for Children}
 \author{Yifu Lang}
 \degreeyear{2021}
 \degreemonth{June}
@@ -48,9 +48,9 @@
 
 % ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-With the recent increase in popularity of the Internet of Things, many companies quickly developed new devices using this technology to stake a claim in a blooming industry. While taking advantage of this technology has yielded many benefits and conveniences in the past few years, the glaring issue of security has not been properly addressed. We have seen many recent attacks on children through IoT devices, and while security mechanisms do exist and are available for use, general users without a technical background may not see the risks as something worth putting effort into mitigating. 
+With the recent increase in popularity of the Internet of Things (IoT), many companies quickly developed new devices using this technology to stake a claim in a blooming industry. While taking advantage of this technology has yielded many benefits and conveniences in the past few years, the glaring issue of security has not been properly addressed. We have seen many recent attacks on children through IoT devices, and while security mechanisms do exist and are available for use, general users without a technical background may not see the risks as something worth putting effort into mitigating. 
 
-In this thesis, we perform a network analysis on some of the existing products available on the market and collect survey data from parents and their understanding of IoT technologies. We then address the issues in IoT security and provide a solution to persuade more users to be wary of the risks at hand when ignoring proper attention to the protection of their data and privacy. 
+In this thesis, we perform a network analysis on some of the existing smart devices available on the market and collect survey data from parents and their understanding of IoT technologies. We form a generalizable mental model of parents and IoT devices as well as a threat model of possible attack vectors. We then address the issues found in our research and provide recommendations for developers to improve their IoT system security. 
 \end{abstract}
 
 % DEDICATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,7 +68,7 @@ and all who have been there for me through rough times.\\\vspace{12pt}
 \begin{acknowledgements}
 I begin by giving my most sincere gratitude for my thesis advisor, Professor Alvaro Cardenas, as someone who has accompanied me throughout the entire research process and always provided further readings and resources for this thesis.
 
-I would also like to thank Professor Su-hua Wang for guiding me through the process of survey and data collection. Additionally, I extend my gratitude to Elizabeth Goldman, Binaisha Datoor, Adam Ernst, and the entire Baby Lab at UCSC for helping me tread unfamiliar territories in the realm of research.
+I would also like to thank Professor Su-hua Wang for guiding me through the process of survey and data collection. Additionally, I extend my gratitude to Elizabeth Goldman, Binaisha Datoor, Adam Ernst, and the entire Baby Lab at UCSC for helping me tread unfamiliar territories in the realm of research in psychology.
 
 I want to thank Professor Darrell Long and Professor David Harrison as reading committee chairs for this thesis, and as some of the most influential professors I have had an opportunity to work with in my time at UCSC.
 
@@ -199,7 +199,7 @@ All in all, we are searching for insecure features that may either violate COPPA
 \end{figure}
 
 \subsection{Attack Vectors}
-Given the versatility of both the Echo Dot and the ROYBI Robot, our research aims to find possible attack vectors for either devices. With the network analysis performed as described in the previous section, we first examine any inconsistencies with encryption protocols and packet patterns to find network exploits. We also examine each feature of both devices to observe any possible COPPA violations or privacy breaches. Finally, we test known attack vectors on the devices. 
+Given the versatility of both the Echo Dot and the ROYBI Robot, our research aims to find possible attack vectors for both devices. With the network analysis performed as described in the previous section, we first examine any inconsistencies with encryption protocols and packet patterns to find network exploits. We also examine each feature of both devices to observe any possible COPPA violations or privacy breaches. Finally, we test known attack vectors on the devices. 
 
 The methodology presented in this chapter results in both a mental model of parents and their children's interactions with smart devices and a threat model of the possible attacks or breaches of privacy that could occur in smart device use. We seek to compare these two models in order to recommend changes to be made for a safer IoT environment.
 
@@ -210,13 +210,191 @@ We first investigate the end-user's experiences and perceptions of smart devices
 
 \section{Privacy Policy}
 \subsection{Amazon}
-Amazon's 
+Amazon's privacy policy for Echo devices are spread across two separate documents. The first document presents information on privacy with Alexa and Echo devices. It states that the device only records audio after it detects the ``wake word'' that triggers voice commands. When a user speaks to Alexa, the Echo device's VCA, the device sends the audio recording to an Amazon cloud service where it is processed. Users have the ability to review and delete voice recording through the Alexa mobile application. This document also clarifies that voice recordings are used to improve Alexa's natural language processing capabilities, where a human reviews a small sample of all recordings to assist in supervised machine learning \cite{supervised}. Users can manage the usage of their voice recordings.
+
+The second document pertains to children's privacy. It states that if a parent or guardian consents, Amazon may collect personal information such as name, birthdate, contact information, voice, photos, videos, location, and device identifiers such as IP addresses or cookies. Amazon uses this collected information to ``improve products and services, including personalizing offerings and recommendations for children, communicating information, enforcing parental controls, and giving parents visibility into how their children use [their] products and services''. Children will not receive interest-based advertisements based on collected data, and data is only shared in transactions and services of third parties, business transfers, and for the protection of Amazon. The parent or guardian may choose to revoke data collection permissions at the cost of some services and features.
 
 \subsection{ROYBI}
-Because the ROYBI Robot is specifically designed for children's use, the privacy policy found on their website already includes details on children's data collection. 
+ROYBI's privacy policy contains information on data collection, third parties, and user rights. The document states that upon creating an account, the service collects the user data of both guardian and child, including name, birthday, gender, email address, password, and usage data. Furthermore, with parent or guardian approval, the service also collects audio and video recordings during the child's lesson. Any information collected will not be shared for marketing purposes, but may be shared with service providers (Amazon AWS, Google Play Store or App Store transactions), disclosed under court order, transferred through a company merger or acquisition, or displayed as a testimonial as a satisfied adult user. 
+
+Because the ROYBI Robot is specifically designed for children's use, the privacy policy contains a section dedicated to COPPA compliance. The document specifies that ROYBI does not knowingly allow children under the age of 13 to use their services without a parent or guardian's consent. The privacy policy also promises that all collected information is securely stored within a database and currently is not used for third-party advertising purposes. All video, audio, and password data are sufficiently encrypted and user data is only accessible by the users themselves. In the event of a data breach, ROYBI will inform users by email. Users are also able to close their accounts, in which their data will be kept in the database for at most 90 days.
 
 \section{Survey Data}
-asdf
+In our survey, we asked questions pertaining to general demographics, developer reliability, data privacy, and understanding of cloud infrastructure. 
+
+\subsection{Demographics}
+We collected anonymous data from 16 parents with children aged 6 or younger. Our participants ranged from 26 to 64 years old and had between 1 and 3 children. They held a wide variety of occupations, although only four reported a technical-based job. We asked our participants about their experience with technology. While self-reported experience does not necessarily reflect actual experience, we combine this and the occupation as a rough indicator of their knowledge. Table \ref{table:demographics} shows the data that we have collected and assigns an identifier to each participant.
+
+\begin{table}
+    \centering
+    \begin{scriptsizetabular}{|c|c|l|l|l|}
+        \hline 
+        ID & Age & Children's Age(s) & Occupation & Familiarity with Technology (Self-reported) \\
+        \hline
+        A & 43 & 4 & Data Analyst & Professional Experience\\
+        B & 42 & 6 & Accountant & Some Experience\\
+        C & 45 & 6 & Data Analyst & Some Experience\\
+        D & 37 & 2 & Sales & Moderate Experience\\
+        E & 37 & 1, 3 & Homemaker & Lots of Experience\\
+        F & 42 & 3, 4 & Quality Specialist & Some Experience\\
+        G & 39 & 5 & Coordinator & Lots of Experience\\
+        H & 48 & 5 & Clinical Pharmacist & Professional Experience\\
+        I & 39 & 4, 6 & Construction Superintendent & Professional Experience\\
+        J & 39 & 0, 3 & Physical Therapist & Some Experience\\
+        K & 38 & 4, 6 & Teacher & Professional Experience\\
+        L & 38 & 2, 4 & None & Moderate Experience\\
+        M & 39 & 3 & Lawyer & Lots of Experience\\
+        N & 64 & 4 & Mathematician & Professional Experience\\
+        O & 35 & 1 & Software Engineer & Professional Experience\\
+        P & 26 & 0, 2, 4 & Direct Sales & Lots of Experience \\
+        \hline
+    \end{scriptsizetabular}
+    \caption{Demographics data collected from our Qualtrics survey.}
+    \label{table:demographics}
+\end{table}
+
+\subsection{Developer Reliability}
+\subsubsection{Smart Device Experience}
+In the survey, we asked the participants about their own experiences with IoT devices. We first ask about smart home devices and other smart devices separately; we found that 10 out of 16 participants have owned a smart home device for more than two years and 13 participants have owned smart devices for more than 2 years. Table \ref{table:smartdevices} draws the collected data.
+
+Of the participants that owned smart home devices, 10 allow their children to use it. For other smart devices, 7 of 13 smart device owners allow their children to use it. We have found that there have been many reasons to allow or disallow it. For example, participant M states that they allow their oldest child to use their smart television device since it ``works like any TV''. Participant O, who works in software engineering, showed distrust for these devices, data collection, and potential attacks.
+
+\begin{table}
+    \centering
+    \begin{scriptsizetabular}{|c|l|l|l|l|l|}
+        \hline 
+        ID & Smart Home Owner & Child Smart Home Use & Smart Device Owner & Child Smart Device Use \\
+        \hline
+        A & More than 2 years & No  & More than 2 years  & Yes\\
+        B & More than 2 years & Yes & 1-2 years          & No\\
+        C & More than 2 years & No  & N/A                & N/A\\
+        D & N/A               & No  & More than 2 years  & No\\
+        E & More than 2 years & Yes & More than 2 years  & No\\
+        F & N/A               & N/A & More than 2 years  & No\\
+        G & More than 2 years & Yes & More than 2 years  & Yes\\
+        H & More than 2 years & Yes & More than 2 years  & Yes\\
+        I & More than 2 years & Yes & More than 2 years  & Yes\\
+        J & More than 2 years & Yes & More than 2 years  & No\\
+        K & 1-2 years         & Yes & Less than 3 months & Yes\\
+        L & 1-2 years         & Yes & More than 2 years  & No\\
+        M & More than 2 years & No  & More than 2 years  & Yes\\
+        N & 1-2 years         & Yes & More than 2 years  & No\\
+        O & N/A               & N/A & More than 2 years  & Yes\\
+        P & More than 2 years & Yes & More than 2 years  & No\\
+        \hline
+    \end{scriptsizetabular}
+    \caption{Data collected from participants of smart device ownership and child use.}
+    \label{table:smartdevices}
+\end{table}
+
+\subsubsection{ROYBI Robot}
+The participants are shown a demonstration video about the capabilities of the ROYBI Robot and asked to answer a few questions about their thoughts on the device. We found that not a single participant has heard of this device. While some of them liked the toy's interactive capabilities, most of the feedback we received was negative. For one, several participants responded with complaints about the product design; the screen was too small and ROYBI's voice sounds too unnatural. Many participants also expressed concern for their child's safety. Participant D had concerns with how the camera is used and the possible threat of hackers, and participant O disliked the use of facial recognition altogether.
+
+When asked whether the participant would consider purchasing the ROYBI Robot, those who answered ``yes'' were interested in its capabilities in teaching languages or was looking for interactive at-home learning, as our research was conducted during the COVID-19 pandemic. On the other hand, those who answered ``no'' either already own an alternative device or disliked the product design.
+When asked about the contents of the device's privacy policy, 7 participants were not sure or did not care. Of those who responded otherwise, participants mentioned restrictions against video, image, audio, and other forms of data collection. Many answers expected that no data is collected whatsoever while some answers specifically talked about preventing the collection of identifiable personal information. Participant O expected ``explanations of what computation happens on the device or on the cloud [and] explanations of what data is stored''.
+
+\subsubsection{Echo Dot for Kids}
+Similarly to the previous section, we showed another demonstration video for our second subject device, Amazon's Echo Dot for Kids, and asked for the participants' opinions. 11 of our 16 participants have heard about the device, and several already own one. Positive opinions include comments about the design, ease of use, and parental controls. As for negative opinions, a common answer we found pertained to privacy issues as participants expressed concern of the device's ability to evesdrop and collect information while idle. Other responses showed adversity to voice controlled assistant technology as a whole. 
+
+Since many of our participants already owned an Echo device, there is no need for them to purchase another. Some considered buying one because of the provided convenience and entertainment, while those who were not considering purchasing the device did not think it was a necessary addition to their homes. When asked about the device's privacy policy, the responses were very similar compared to ROYBI's expectations. While some participants did not know or care, others expected that no recordings are saved or that personal information is not shared with third parties. Many of the responses held resentment towards privacy in technology; participant D states that they ``don't believe tech cares about privacy'' and participant N expects ``usual meaningless nonsense''.
+
+%use Q36
+\subsection{Data Privacy}
+\begin{table}
+    \centering
+    \begin{scriptsizetabular}{|l|l|l|l|l|}
+        \hline 
+        Question & Disagree & Slightly Disagree & Slightly Agree & Agree \\
+        \hline
+        \begin{scriptsizetabular}{@{}l@{}}
+            I have concerns for how my data \\
+            is collected and stored on the Internet.
+        \end{scriptsizetabular} & 0 & 4 & 4 & 8 \\ &  &  &  & \\
+        \begin{scriptsizetabular}{@{}l@{}}
+            I find it important that collected data is kept private.
+        \end{scriptsizetabular} & 0 & 2 & 4 & 10 \\ &  &  &  & \\
+        \begin{scriptsizetabular}{@{}l@{}}
+            I thoroughly research into Internet-connected \\
+            devices before making a purchase.
+        \end{scriptsizetabular} & 1 & 3 & 7 & 5 \\ &  &  &  & \\
+        \begin{scriptsizetabular}{@{}l@{}}
+            I am familiar with the Children's\\ 
+            Online Privacy Protection Act (COPPA).
+        \end{scriptsizetabular} & 8 & 2 & 4 & 2 \\
+        \hline
+    \end{scriptsizetabular}
+    \caption{Responses to the scale questions in our survey pertaining Internet safety.}
+    \label{table:scale}
+\end{table}
+
+We presented statements regarding data privacy and COPPA and asked participants on whether they agree or disagree with the statement on a scale (table \ref{table:scale}). We found that no participants fully disagree with the statements, ``I have concerns for how my data is collected and stored on the Internet'' and ``I find it important that collected data is kept private''. This shows that all participants, at the very least, are aware that data collection is an issue in technology. A majority of them answered ``Agree'', expressing real concern for these issues at hand. 12 participants agreed and slightly agreed with the statement, ``I thoroughly research into Internet-connected devices before making a purchase'', demonstrating some skepticism in IoT technologies. Inversely, a majority of participants did not express familiarity with COPPA; in general, without a technical background, it may be more difficult to understand how personal data is stored and why collecting children's data requires more caution. 
+
+When presented with a list of security concerns regarding devices connected to the Internet, we found that participants were most concerned about general privacy and data storage (table \ref{table:privacyconcerns}). Since many modern devices must be kept on, a common concern is that users do not know what data is being recorded, when they are recording, and how the data is being transported and stored. When asked to elaborate on the selections made, participant F states, 
+\begin{quote}
+    ``We worry after hearing those stories of these devices recording at all times. We have thought of buying the Alexa or Google Home devices for the convenience and fun, but always stop ourselves due to fear of privacy loss.''
+\end{quote}
+
+
+%Q37
+\begin{table}
+    \centering
+    \begin{scriptsizetabular}{|l|c|}
+        \hline 
+        Security Concern & Count \\
+        \hline
+        Data Storage & 10\\
+        Data Usage & 6\\
+        Inappropriate Content & 8\\
+        Privacy & 12\\
+        Other & 1\\
+        None & 1\\
+        \hline
+    \end{scriptsizetabular}
+    \caption{Responses pertaining security concerns that participants have regarding Internet-connected devices from a multiple choice form.}
+    \label{table:privacyconcerns}
+\end{table}
+
+When presented a list of concerns regarding the dialogue between children and smart devices, most participants were primarily concerned about the privacy of the conversations and how collected data is used (table \ref{table:dialogue}). In particular, many participants elaborated that they are concerned with how collected data could affect their children in the future. Participant O says,
+\begin{quote}
+``What data about my child is being collected, for seemingly innocuous reasons, maybe by people who don't have kids and don't have concerns about data... how is all this data about my child possibly going to come back and haunt them later in ways we can't even comprehend now?''
+\end{quote}
+From our data, we found that most concerns from our participants stem from not knowing when and what data is collected. Other concerns included worries of data theft, data sharing with third parties, preventing advertisement influence, and whether device content is child-friendly.
+
+%Q39
+\begin{table}
+    \centering
+    \begin{scriptsizetabular}{|c|c|l|l|l|}
+        \hline 
+        Dialogue Concerns & Count \\
+        \hline
+        Inappropriate Dialogue & 4\\
+        Data Storage & 4\\
+        How data is used & 11\\
+        Privacy of Conversations & 11\\
+        Other & 0\\
+        None & 4\\
+        \hline
+    \end{scriptsizetabular}
+    \caption{Responses pertaining to concerns of the dialogue between children and smart devices.}
+    \label{table:dialogue}
+\end{table}
+
+Finally, we ask the participants about the practices that their families use to keep their data safe. Some solutions include avoiding suspicious URLs, using a firewall, using multi-factor authentication \cite{mfa}, using unique passwords, and avoiding smart devices altogether. Some participants admitted to not following any form of security practices on the Internet.
+
+%Q35, 49, 51
+\subsection{Cloud Infrastructure}
+We ask questions pertaining to the participant's understanding of how an IoT device works in an cloud infrastructure. First, we asked participants to describe their understanding of how data collection works in Internet-connected devices. While only 3 responses mentioned cloud services, a majority of participants believe that IoT devices do collect and save data in some capacity. Many responses also mentioned that search engines, social media services, and mobile applications collect data through search queries and usage statistics as well. 3 participants were unable to answer the question and responded with, ``I don't know''.
+
+Second, we ask participants to describe their understanding of how data is stored after being collected. We found that half of the participants talked about the cloud or servers over the Internet; participant O specifically mentioned Amazon's S3 cloud storage service. The rest of the participants did not know where collected data is kept or guessed that it was saved within the device itself.
+
+Finally, we ask our participants to describe any concerns they have for how their data is stored on the Internet. Almost every participant shared grievances about the increase in data collection in recent years. Several responses expressed concerns in possible data breaches that could expose their personal identifiable information. Many responses disliked the fact that data can be hard to delete and could be used against them in the future. Participant K found that targeted advertisements helped them find suitible products but still expressed concern over voice recording collection. Many participants are also worried about companies selling their data for profit.
+
+\section{Mental Model}
+From the data we collected from survey participants and privacy policy review, we can form a generalizable mental model for smart device users. We found that while most users know about or have heard of the importance of data privacy, they do not necessarily have the background knowledge to understand the full scope of the issue. Those who have a background in a technical field have demonstrated a deeper understanding of how data is collected, where it is stored, and the consequences of a privacy breach. However, those who do not often undermine the severity of these consequences and follow fewer security practices to keep their data safe.
+
+We have also found that user expectations on what would be on a device's privacy policy often does not match with the actual contents. While many of our participants showed concern in companies selling their data for profit, we have found that neither of the devices we analyze in our research directly sell any data to third-parties. A majority of our participants have also expressed concerns with what data is collected through the microphone on smart devices. However, Amazon's Echo device privacy policy clearly states that it only records audio after it detects the user's chosen trigger word. ROYBI's policy states that audio and video data is only recorded during lessons.
+
+Furthermore, we found that the design of a product affects a potential buyer's perceptions. Participants found that the ROYBI Robot's design was crude and thus showed more uncertainty towards its security. With the addition of a camera, microphone, and facial recognition capabilities, many of the participants expressed concerns towards the data the device collects from children. On the other hand, the Echo device's ease of use, as well as Amazon's reputation, earned the trust of our participants, who showed more desire to purchase one.
 
 % TAXONOMY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Device Taxonomy}
@@ -241,8 +419,7 @@ All of these domains are either owned or registered by Amazon.
 
 Upon receiving a DNS response, the device establishes a connection with the aformentioned servers using the TLS 1.2 protocol and communicates with them through TCP. All packets are encrypted, and all subsequent communications use the same protocols.
 
-%COME BACK TO THIS AFTER ANOTHER PACKET CAPTURE TO DOUBLE CHECK KEKW
-When inactive, the device intermittently communicates with an endpoint at \\\texttt{spectrum.s3.amazonaws.com}, sending a small number of TCP packets every 20 seconds. The Echo Dot's begins to listen when a trigger word is detected; by default, this is set to "Alexa". The device itself simply records a voice command and sends it to Amazon's Alexa Voice Services API to be parsed \cite{alexa}. The API then responds with an appropriate action. If any settings are changed, they are reflected in Amazon's cloud servers and the mobile application (fig. \ref{fig:voicecom}). Users are also notified by email when Alexa settings have been changed.
+When inactive, the device intermittently communicates with an endpoint at \\\texttt{spectrum.s3.amazonaws.com}, sending a small number of TCP packets every 20 seconds. The Echo Dot's begins to listen when a trigger word is detected; by default, this is set to ``Alexa''. The device itself simply records a voice command and sends it to Amazon's Alexa Voice Services API to be parsed \cite{alexa}. The API then responds with an appropriate action. If any settings are changed, they are reflected in Amazon's cloud servers and the mobile application (fig. \ref{fig:voicecom}). Users are also notified by email when Alexa settings have been changed.
 
 \begin{figure}
     \includegraphics[width=\textwidth]{voice command.jpg}
@@ -250,16 +427,17 @@ When inactive, the device intermittently communicates with an endpoint at \\\tex
     \label{fig:voicecom}
 \end{figure}
 
-Feature usage bandwidth differs depending on what command is invoked. A simple "Alexa, what time is it?" sends and receives 131 KB of packets over 202 packets in 6 seconds, while commands that invoke Alexa \textit{skills} may use upwards of several MBs, depending on its complexity. Furthermore, third-party skills require third-party servers. For example, invoking the "Disney Stories" skill requires a communication establishment with \texttt{alexastoryassets.content.disney.io}, which is not managed by Amazon.
+Feature usage bandwidth differs depending on what command is invoked. A simple ``Alexa, what time is it?'' sends and receives 131 KB of packets over 202 packets in 6 seconds, while commands that invoke Alexa \textit{skills} may use upwards of several MBs, depending on its complexity. Furthermore, third-party skills require third-party servers. For example, invoking the ``Disney Stories'' skill requires a communication establishment with \texttt{alexastoryassets.content.disney.io}, which is not managed by Amazon.
 
+\subsubsection{Alexa Mobile Application}
+The Alexa mobile application is available on both the Apple App Store and the Google Play Store. From here, Echo device users can use it to set up the device, connect it to a WiFi network, and access a myriad of features and settings, including FreeTime. Network analysis reveals that the application communicates with the same set of servers as the Echo device, except \texttt{fireoscaptiveportal.com}. Most packets are well encrypted and use either the TLS 1.2 or TCP protocol, with the exception of Voice over Internet Protocol (VoIP) features that involves STUN and UDP streams to a server.
+
+% Probably look into these figures again. UDP, STUN, cloud server name probably just say "amazon cloud"
 \begin{figure}
     \includegraphics[width=\textwidth]{mobile command.jpg}
     \caption{If a mobile command is to be redirected to an Echo device, the API sends an appropriate action to the device. Any changes made within the server is updated on the application.}
     \label{fig:mobilecomm}
 \end{figure}
-
-\subsubsection{Alexa Mobile Application}
-The Alexa mobile application is available on both the Apple App Store and the Google Play Store. From here, Echo device users can use it to set up the device, connect it to a WiFi network, and access a myriad of features and settings, including FreeTime. Network analysis reveals that the application communicates with the same set of servers as the Echo device, except \texttt{fireoscaptiveportal.com}. Most packets are well encrypted and use either the TLS 1.2 or TCP protocol, with the exception of Voice over Internet Protocol (VoIP) features that involves STUN and UDP streams to a server.
 
 We have found that FreeTime settings sufficiently filters explicit content and \textit{skills} from devices. When asking explicit questions involving violence, sexual content, Alexa will answer differently compared to when FreeTime is disabled, censoring explicit words and refusing to answer explicit questions. All \textit{skills} that contain explicit content are also disabled on devices with FreeTime enabled.
 
@@ -271,7 +449,7 @@ We review four features that directly interact with an Echo device:
 \item Play: Plays music through an Echo device
 \end{enumerate}
 
-When a user invokes a feature on the application for the Echo device, one of two behaviors occur. If the feature does not involve VoIP, the application sends packets to a server, which then processes the command and redirects a response to the device \ref{fig:mobilecomm}. Depending on the feature, the application contacts different servers and APIs; table \ref{table:alexa} contains each feature relevant to the Echo Dot and what service is called. For features that do use VoIP, the devices establish STUN binding requests to a server. From here, the mobile device sends and receives STUN streams from said server, while the Echo device uses UDP streams. All STUN and UDP packets are well encrypted.
+When a user invokes a feature on the application for the Echo device, one of two behaviors occur. If the feature does not involve VoIP, the application sends packets to a server, which then processes the command and redirects a response to the device (fig. \ref{fig:mobilecomm}). Depending on the feature, the application contacts different servers and APIs; table \ref{table:alexa} contains each feature relevant to the Echo Dot and what service is called. For features that do use VoIP, the devices establish STUN binding requests to a server. From here, the mobile device sends and receives STUN streams from said server, while the Echo device uses UDP streams. All STUN and UDP packets are well encrypted.
 
 \begin{table}
     \centering
@@ -295,63 +473,63 @@ When a user invokes a feature on the application for the Echo device, one of two
 \subsection{Echo Dot Attack Vectors}
 While our network analysis for the Echo Dot shows that Amazon consistently utilizes state-of-the-art encryption and security standards, there are still some inherent risks involving smart home use. In this section, we discuss some of the possible attacks or data breaches that are possible due to the device's protocols. 
 
-\subsubsection{Credential Stuffing}
-If a user's account details are somehow compromised, it is possible for an attacker to access and modify all existing Alexa settings for the user's devices. Using a separate mobile device, we were able to download the Alexa application and log into our existing Amazon account. From here, we are able to access all information, features, and settings for the Echo Dot devices. In an adversarial situation, an attacker can change the settings in FreeTime or disable it entirely, talk through an Echo device using the Call feature, access child information, and overall can alter anything in the Amazon account.  
+\subsubsection{Phishing}
+If a user's account details are somehow compromised through phishing \cite{phishing}, it is possible for an attacker to access and modify all existing Alexa settings for the user's devices. Using a separate mobile device, we were able to download the Alexa application and log into our existing Amazon account. From here, we are able to access all information, features, and settings for the Echo Dot devices. In an adversarial situation, an attacker can change the settings in FreeTime or disable it entirely, talk through an Echo device using the Call feature, access child information, and overall can alter anything in the Amazon account.  
 
-However, the Alexa application has a few security mechanisms implemented to prevent widespread breaches. Attackers are only able to attempt to log in twice before they are required to complete a CAPTCHA \cite{captcha} challenge to continue. Additionally, upon any changes to the settings in an Alexa account, the owner is notified by email, giving them an opportunity to secure their accounts when suspicious activity is found.
+However, the Alexa application has a few security mechanisms implemented to prevent credential stuffing attacks. Attackers are only able to attempt to log in twice before they are required to complete a CAPTCHA \cite{captcha} challenge to continue. Additionally, upon any changes to the settings in an Alexa account, the owner is notified by email, giving them an opportunity to secure their accounts when suspicious activity is found.
 
 \subsubsection{Home Occupancy}
 If an attacker has access to the same network the device is connected to, they are possibly able to detect when an Echo Dot device has been activated. Because of the 20-second intermittent packets, any other outgoing packets can be an indication of a person present in the house. This information is often used by burglars when picking a house to rob; approximately 72\% of house robberies occur when no members of the household are present such as to avoid confrontation during the job \cite{burglar}. 
 
 \section{ROYBI Robot}
-The ROYBI Robot is an Internet-connected smart toy designed as a tutor in technology, math, science, and language arts for children. 
+The ROYBI Robot is an Internet-connected smart toy designed as a tutor in technology, math, science, and language arts for children. Parents and caretakers can schedule or play lessons through the mobile application on the device to teach their children about various topics. The device and cloud system also have ``smart'' features, such as facial recognition and natural language processing.
 
 \subsection{ROYBI Robot Network Analysis}
 
 \subsubsection{ROYBI Robot Device}
-Again, we use the experiment setup in figure \ref{fig:experiment} to capture packets from both the ROYBI device and the mobile application. Similarly, upon startup, the ROYBI device makes several DNS queries to the following domains:
+Again, we use the experiment setup in figure \ref{fig:experiment} to capture packets from both the ROYBI device and the mobile application. Similarly, upon startup, the ROYBI device makes several DNS queries to the following domains and subdomains:
 
 \begin{itemize}
 \item \texttt{roybirobot.com}
 \item \texttt{amazonaws.com}
 \item \texttt{tencentcloudapi.com}
-\item \texttt{aliyun.com}
+\item \texttt{time.pool.aliyun.com}
 \end{itemize}
 
+A majority of packets are sent to and from \texttt{iot.roybirobot.com} and \texttt{cdn.roybirobot.com}, which is also hosted on Amazon Web Services. Although the device also contacts Chinese web services, we found that only a small number of ICMP protocol packets were sent, likely for diagnostic reasons. When idle, the device sends a stream of TCP and TLS 1.2 packets to subdomains of either \texttt{roybirobot.com} or \texttt{amazonaws.com} every five seconds. Each of these packets are well encrypted.
 
+The ROYBI device has a built-in camera and microphone with multiple functionalities. With parental consent, ROYBI can recognize a child's face, given a picture for reference through the mobile application. When the child is visible to the device, ROYBI retrieves a quip to communicate with the child. Parents can also access the camera and microphone directly through the application, which we analyze in the next section. The packaging comes with a rubber camera cover in case users have privacy concerns. 
 
-Camera is used for facial recognition and Camera feature on app
-Comes with cover
-Tested camera covered and uncovered, found no major differences in the size of intermittent packets sent, unlikely that the video feed is going anywhere
+\begin{figure}
+    \includegraphics[width=\textwidth]{lesson.jpg}
+    \caption{When ROYBI starts a lesson, the device downloads lesson data, tracks the student's progression, and updates the child's progress report.}
+    \label{fig:lesson}
+\end{figure}
+
+Primarily, the camera and microphone built are used during lessons. When a new or scheduled lesson is started, the device exchanges packets with \texttt{roybirobot.com}, presumably to download lesson data. During the lesson, for each response, the device exchanges packets with the cloud servers (fig \ref{fig:lesson}). Lesson data can be found within the mobile application. Since we found that the privacy policy states that the device collects video and audio data for analytics, it is likely that said data is sent in these exchanges.
+
+To test whether ROYBI sends video or audio streams during idle time, we measure the bandwidth under two conditions. First, we capture packets over two minute intervals with the camera covered and the device in a quiet place. Under these conditions, we found that the device sends and average of 6956 bytes, at 458 bits per second. We then moved the device to an environment with movement and sound and performed a capture for two minutes. Under these conditions, we found that the devices sends an average of 7184 bytes at 447 bits per second. If video and audio stream were suspected to be sent to the cloud servers, we expected a difference between the size and bandwidth of these stream. However, we found no significant differences and conclude that video and audio data is not sent while the device is idle.
 
 \subsubsection{ROYBI Mobile Application}
-% FIXME
-\begin{table}
-    \centering
-    \begin{scriptsizetabular}{|c|c|c|}
-        \hline 
-        Feature & Description & Endpoint \\
-        \hline
-        Call & Enables direct communication with an owned Echo device & idk \\
-        Drop In & Enables direct communication with a contact's Echo device & idk \\ 
-        Announce & Announces a typed message through an Echo device & idk \\ 
-        Play & Plays music through an Echo device & Depends on \textit{skill} invoked \\
-        \hline
-    \end{scriptsizetabular}
-    \caption{A list of features available on the ROYBI mobile application that directly interacts with the device.}
-    \label{table:ROYBI}
-\end{table}
+In the mobile application, after creating an account, parents have the ability to initialize the ROYBI device. First, the user is prompted to input a WiFi network name and password. The application generates a QR code containing the WiFi information, as well as a session ID that binds the device to a ROYBI account. The parent must then show the QR code to the ROYBI device, which subsequently uses the information to connect to the network and establishes a connection with the \texttt{roybirobot.com} server. While the password is not encrypted in the QR code, it is unlikely that an attacker will be able to access it in any way.
 
-\subsection{ROYBI Robot Attack Vectors}
+After device configuration, the parent has a few features available to them.
 
-\subsubsection{Credential Stuffing}
-Similar to the issue that the Amazon Echo Dot faces, 
+\begin{itemize}
+    \item Learning Room: Users can view a list of recommended lessons appropriate for the child's age. Here, they can choose to either start a lesson immediately or schedule a lesson to be invoked by the ROYBI device at a later time.
+    \item Library: Users have access to all available lessons and educational songs available to the ROYBI device, as well as instructional videos on the device's capabilities.
+    \item Reports: Users can review weekly progress reports. Using the child's voice recording during the lesson, the cloud server keeps track of how many words the child learned and how well they pronounced them.
+    \item Profile: Users can review and edit profiles for themselves and for their children. A child profile consists of a name, birthday, gender, and English proficiency.
+    \item Video: Users can directly access the camera, speaker, and microphone built into the ROYBI device.
+\end{itemize}
 
-\subsubsection{Spying}
-In finding the lack of sufficient encryption for the camera, 
-A lack of encryption for any 
-Camera feed needs to be encrypted, don't just go off of Kerckhoffs' Principle \cite{kerckhoffs}
+\begin{figure}
+    \includegraphics[width=\textwidth]{changes on app.jpg}
+    \caption{Updates from the mobile application are relayed to the ROYBI device.}
+    \label{fig:roybiapp}
+\end{figure}
 
+The mobile application communicates with various subdomains of \texttt{roybirobot.com} through TLS 1.2 and TCP protocols when downloading assets, making changes to a profile, and scheduling or starting lessons on the ROYBI device (fig. \ref{fig:roybiapp}). However, the Video feature on the application directly communicates with the ROYBI device through UDP stream; when connected to the same WiFi network, our packet capture shows that the mobile device communicates directly with the ROYBI device (fig. \ref{fig:udp}). While on a different device, the ROYBI device streams to and from a private network address, presumably the mobile device. Through the application, the user can also speak through ROYBI's speaker, allowing a parent to communicate with the child through the device.
 
 \begin{figure}
     \includegraphics[width=\textwidth]{udp.jpg}
@@ -359,28 +537,63 @@ Camera feed needs to be encrypted, don't just go off of Kerckhoffs' Principle \c
     \label{fig:udp}
 \end{figure}
 
+Our network analysis also reveals a lack of sufficient encryption for the data in these UDP packets. Again, we cover ROBYI's camera and place it in a quiet place before capturing the UDP stream. When comparing the identical-sized packets from the stream, we have found little to no variation between the contents of the packet, which indicates either no encrytion or encryption key reuse (fig. \ref{fig:unencrypted}).
+
+\subsection{ROYBI Robot Attack Vectors}
+
+\subsubsection{Credential Stuffing}
+\begin{figure}
+    \includegraphics[width=\textwidth]{stuffing.jpg}
+    \caption{Adversaries can perform a credential stuffing attack by obtaining username-password combinations and repeatedly attempt log ins.}
+    \label{fig:stuffing}
+\end{figure}
+
+Similar to the issue that the Amazon Echo Dot faces, if a ROYBI user's credentials are compromised, they are at risk of an account breach. The ROYBI mobile application does not implement any further security measures for repeated login attempts, meaning their system is fully susceptible to credential stuffing attacks (fig. \ref{fig:stuffing}) \cite{stuffing}. Upon breach, attackers gain access to all profile information and can alter lesson schedules. Moreover, attackers can use the Video feature to access the camera and video feed as well as communicate directly with anyone present with the ROYBI device.
+
+\subsubsection{Spying}
+We cite Kerckhoffs' Principle \cite{kerckhoffs} to address the issues we found with ROYBI's Video feature; when designing a secure system, parties should rely on only its choice in cryptographic keys to maintain secrecy. In ROYBI's case, we found unencrypted UDP streams that contained video and audio data (fig. \ref{fig:unencrypted}). While the streaming protocol is unknown, in the event where an attacker discovers how these streams are processed, they will have full access to the video and audio between the two devices, presenting a severe security risk (fig. \ref{fig:evesdropper}).
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{evesdropper.jpg}
+    \caption{Adversaries on the same WiFi network as ROYBI have access to unencrypted camera and microphone feed data.}
+    \label{fig:evesdropper}
+\end{figure}
+
 \begin{figure}
     \includegraphics[width=0.5\textwidth]{unencrypted1.png}
     \includegraphics[width=0.5\textwidth]{unencrypted2.png}
-    \caption{A Wireshark packet capture shows that the ROYBI Robot sends a UDP stream with small differences in data per packet.}
+    \caption{A Wireshark packet capture shows that the ROYBI Robot sends a UDP stream with virtually no difference in payload contents when the camera is covered.}
     \label{fig:unencrypted}
 \end{figure}
 
 % CONCLUSION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Conclusion}
 \label{ch:conclusion}
+Throughout this thesis, we have explored data privacy, security mechanisms, and consumer insights on smart devices designed for children. In developing a generalizable mental model of parents who allow their children to use smart devices, we are able to better understand the security practices these parents neglect, what concerns they have regarding cloud infrastructures, and what weaknesses must be strengthened for a more secure IoT environment.
+
+We were able to find security concerns and attack vectors by performing network analyses on the ROYBI Robot and the Amazon Echo Dot for Kids. From here, we develop a threat model to accompany the mental model. By comparing the two, we find solutions to the issues we found within the IoT framework. Finally, we aim to provide recommendations for IoT developers in order to ensure the security and privacy of consumers and their children.
 
 \section{Recommendation}
-2FA
-Encrypt everything
-Data collection transparency: when are you collecting data? I want to know when I'm being recorded
-For example, Amazon opts to send users an email to notify of any changes made to their settings. 
+Based on our finding and survey data, we make some recommendations for IoT developers.
+
+\subsubsection{Preventing Automated Attacks}
+As we have observed from the Alexa mobile application, users are required to complete a CAPTCHA challenge after multiple failed log in attempts. This was not a security feature that was implemented in the ROYBI mobile application, and thus exposed ROYBI's system to large-scale automated attacks, such as credential stuffing, brute force attacks, and dictionary attacks \cite{brute}. In any service that requires logging in, we recommend that developers implement a similar mechanism to prevent attacks like these.
+
+\subsubsection{Multi-Factor Authentication}
+Research has shown that MFA adds a nearly inpenetrable layer of security to an authentication system \cite{mfa}. While it can be hard to convince users to take an extra step before being able to log into their accounts, developers should at least provide an option to allow users to enable MFA. Ideally, this should be required for all users to ensure maximum security in the system; for example, the University of California has recently required all students and faculty to use Duo, a MFA service, to access their university accounts. 
+
+\subsubsection{Encrypt Everything}
+In our network analysis, we have found that the ROYBI device does not encrypt all of its outgoing packets. Currently, the payload of these packets contain only raw unencrypted data and holds no indicator of which media protocol is used to process it. However, in the event that an attacker gains knowledge of how the stream is processed, they are easily able to see and hear all video and audio data that the ROYBI device sends. We recommend that \textbf{all} network traffic should be encrypted using a strong encryption algorithm to prevent privacy breaches in the future.
+
+\subsubsection{Data Collection Transparency}
+We have found in our survey data that many consumers are often reluctant in using smart devices because of a lack of understanding in what data is collected and how it is stored. Prior research has found that the vast majority of people do not read privacy policies at all \cite{privacypolicy}, so developers can reasonably expect that users are not fully aware of any data collection occurring. To remedy this problem, developers should take more initiative in informing users of their data collection methods. 
 
 \section{Future Work}
-More survey subjects
-More devices to look into
+As IoT is still a growing industry, there are still more vectors to explore within this field. Since there are many more smart devices on the market, we can perform network analysis on a different set of devices and compare them to our findings in this research. Prior research has found many more security issues present in other smart toys\cite{cardenas:smarttoys}, which leads us to believe that children's IoT devices are lacking in security development.
 
+We also aim to further diversify our survey participants. Most of our participants were contacted through word of mouth or chosen from an existing subject pool, courtesy of the Baby Lab at UCSC. By reaching out to a wider variety of people from different background, we can form a more thoroughly developed mental model for parents and IoT devices, which in turn gives us a better look at what recommendations to make for developers.
 
+Instead of a survey, our original plan was to interview parents and children in-person. In this setting, we also allow the child to interact with the devices. This method of data collection should have provided parents with more insight on how these devices work and provided us with the child's viewpoints as well. While in-person data can be more valuable to our research, we unfortunately could not conduct these interviews due to the COVID-19 pandemic. In the future, we will have the ability to look into children's opinions on the matter as well. From here, we can also build a mental model for children in addition to the parents.
 
 % BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \nocite{*}
