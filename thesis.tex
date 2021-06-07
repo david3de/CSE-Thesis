@@ -15,6 +15,7 @@
 \newcommand{\comment}[1]{}
 \documentclass[12pt]{ucthesis}
 \usepackage{graphicx}
+\usepackage{amsmath}
 \graphicspath{ {./img} }
 \def\dsp{\def\baselinestretch{2.0}\large\normalsize}
 \dsp
@@ -32,7 +33,7 @@
 \committeemembertwo{Professor David Harrison}
 \numberofmembers{3} %% (including chair) possible: 3, 4, 5, 6
 \deanlineone{Quentin Williams}
-\deanlinetwo{Acting Vice Provost and Dean of Graduate Studies}
+\deanlinetwo{Interim Vice Provost and Dean of Graduate Studies}
 \deanlinethree{}
 \field{Computer Science and Engineering}
 \campus{Santa Cruz}
@@ -266,7 +267,7 @@ Of the participants that owned smart home devices, 10 allow their children to us
         A & More than 2 years & No  & More than 2 years  & Yes\\
         B & More than 2 years & Yes & 1-2 years          & No\\
         C & More than 2 years & No  & N/A                & N/A\\
-        D & N/A               & No  & More than 2 years  & No\\
+        D & N/A               & N/A  & More than 2 years & No\\
         E & More than 2 years & Yes & More than 2 years  & No\\
         F & N/A               & N/A & More than 2 years  & No\\
         G & More than 2 years & Yes & More than 2 years  & Yes\\
@@ -427,7 +428,7 @@ When inactive, the device intermittently communicates with a database endpoint a
 Feature usage network bandwidth differs depending on what command is invoked. A simple ``Alexa, what time is it?'' sends and receives 131 KB of packets over 202 packets in 6 seconds, while commands that invoke Alexa \textit{skills} may use upwards of several MBs, depending on its complexity. Furthermore, third-party skills require third-party servers. For example, invoking the ``Disney Stories'' skill requires a communication establishment with \texttt{alexastoryassets.content.disney.io}, which is not managed by Amazon.
 
 \subsubsection{Alexa Mobile Application}
-The Alexa mobile application is available on both the Apple App Store and the Google Play Store. From here, Echo device users can use it to set up the device, connect it to a WiFi network, and access a myriad of features and settings, including FreeTime. Network analysis reveals that the application communicates with the same set of servers as the Echo device, except \texttt{fireoscaptiveportal.com}. Most packets are well encrypted and use either the TLS 1.2 or TCP protocol, with the exception of Voice over Internet Protocol (VoIP) features that involves STUN and UDP streams to a server.
+The Alexa mobile application is available on both the Apple App Store and the Google Play Store. From here, Echo device users can use it to set up the device, connect it to a WiFi network, and access a myriad of features and settings, including FreeTime. Network analysis reveals that the application communicates with the same set of servers as the Echo device, except \texttt{fireoscaptiveportal.com}. All packets are well encrypted and use either the TLS 1.2 or TCP protocol, with the exception of Voice over Internet Protocol (VoIP) features that involves STUN and UDP streams to a server.
 
 % Probably look into these figures again. UDP, STUN, cloud server name probably just say "amazon cloud"
 \begin{figure}
@@ -526,15 +527,88 @@ After device configuration, the parent has a few features available to them.
     \label{fig:roybiapp}
 \end{figure}
 
-The mobile application communicates with various subdomains of \texttt{roybirobot.com} through TLS 1.2 and TCP protocols when downloading assets, making changes to a profile, and scheduling or starting lessons on the ROYBI device (fig. \ref{fig:roybiapp}). However, the Video feature on the application directly communicates with the ROYBI device through a UDP stream; when connected to the same WiFi network, our packet capture shows that the mobile device communicates directly with the ROYBI device (fig. \ref{fig:udp}). While on a different device, the ROYBI device streams to and from a private network address, presumably the mobile device. Through the application, the user can also speak through ROYBI's speaker, allowing a parent to communicate with the child through the device.
+The mobile application communicates with various subdomains of \texttt{roybirobot.com} through TLS 1.2 and TCP protocols when downloading assets, making changes to a profile, and scheduling or starting lessons on the ROYBI device (fig. \ref{fig:roybiapp}). However, the Video feature on the application directly communicates with the ROYBI device through a UDP stream; when connected to the same WiFi network, our packet capture shows that the mobile device communicates directly with the ROYBI device. While on a different device, the ROYBI device streams to and from a private network address, presumably the mobile device. Through the application, the user can also speak through ROYBI's speaker, allowing a parent to communicate with the child through the device.
 
 \begin{figure}
-    \includegraphics[width=\textwidth]{udp.jpg}
-    \caption{ROYBI's camera functionality directly connects to the application on the mobile device through a socket. We have found that it contains unencrypted or poorly encrypted data.}
-    \label{fig:udp}
+    \includegraphics[width=0.5\textwidth]{unencrypted1.png}
+    \includegraphics[width=0.5\textwidth]{unencrypted2.png}
+    \caption{A Wireshark packet capture shows that the ROYBI Robot sends a UDP stream with virtually no difference in payload contents when the camera is covered.}
+    \label{fig:unencrypted}
 \end{figure}
 
-Our network analysis also reveals a lack of sufficient encryption for the data in these UDP packets. Again, we cover ROBYI's camera and place it in a quiet place before capturing the UDP stream. When comparing the identical-sized packets from the stream, we have found little to no variation between the contents of the packet, which indicates either no encrytion or encryption key reuse (fig. \ref{fig:unencrypted}).
+
+\subsection{UDP Stream Analysis}
+Our network analysis heavily suggests a lack of sufficient encryption for the data in these UDP packets. Again, we cover ROBYI's camera and place it in a quiet place before capturing the UDP stream. When comparing some of the identical-sized packets from the stream, we have found little to no variation between the contents of some of the packet, which indicates either no encryption, encryption key reuse, or other encryption issues. (fig. \ref{fig:unencrypted}). We first attempt to encode the payloads within the UDP packets with common media encodings. However, we have found that the beginning of each payload starts with \texttt{0xF1 D0}, which does not match the header for any common media type. Figure \ref{table:encodings} shows a list of the encodings we attempted to decode the payloads with.
+
+Next, we perform statistical analysis on packet captures under different conditions. We capture packets from the ROYBI device both with variation in the video and audio, video without audio, audio without video, and no variation, similarly to previous experiments. With these four conditions, we calculate the statistical traits with regard to the bit at a certain index for each packet. In this experiment, we only use packets of size 1074 bytes, as only these packets showed patterns of repetition.
+
+\begin{table}
+    \centering
+    \begin{scriptsizetabular}{|c|l|c|}
+        \hline 
+        Encoding & Description & Header or Signature \\
+        \hline
+        ROYBI & Unknown encoding from the ROYBI stream & \texttt{0xF1 D0} \\
+        \texttt{.jpg} & Lossy compression for digital images & \texttt{0xFF D8 FF} \\
+        \texttt{.png} & Digital image file type & \texttt{0x89 50 4E 47 0D 0A 1A 0A} \\
+        \texttt{RTP/RTSP} & Real-time Transport (Streaming) Protocol & \texttt{b10} \\
+        \texttt{.gz} & File compression format & \texttt{0x1F 8B} \\
+        \texttt{.zip} & File compression format & \texttt{0x50 4B} \\
+        \hline
+    \end{scriptsizetabular}
+    \caption{A list of common media file encodings we compared to the payloads.}
+    \label{table:encodings}
+\end{table}
+
+Given the set $X_i$ of bits at index $i$ from each packet, we can find the Shannon entropy of the set
+\begin{align*}
+    H(X_i) = - (P(x_{i0}) \log_2 P(x_{i0}) + P(x_{i1}) \log_2 P(x_{i1})),
+\end{align*}
+where $x_{i0}$ and $x_{i1}$ represent the categories \texttt{0} and \texttt{1} and $P(x_{i0})$ and $P(x_{i1})$ are the probability mass functions for these categories in $X_i$. 
+
+We used the \texttt{numpy} and \texttt{scipy} Python packages to calculate the variance and the $\chi$-squared p-value, respectively. Through Wireshark, we first apply a filter to our packet captures to show only UDP packets of size 1074 bytes sent from the ROYBI device to our mobile device. We detach the 1032 byte UDP payload from each packet; then, for each packet index, from 0 to 1031, we count the occurrences of \texttt{0} and \texttt{1} bits. For each of the indices, we calculate the Shannon entropy, variance, and $\chi$-squared values and found the average and median values across all indexed bit sets (fig. \ref{table:stats}). 
+
+\begin{table}
+    \centering
+    \begin{scriptsizetabular}{|l|l|l|l|}
+        \hline 
+        Condition & Entropy & Variance & $\chi^2$ p-value \\
+        \hline
+        \hline
+        \textbf{Video and audio} & & & \\
+        Average & 0.9803676240724125 & 0.2438377782554819 & 0.06999612094542865 \\
+        Median  & 0.9937492975910669 & 0.2478368020888454 & 5.798602844885254e-17 \\
+        \hline
+        \hline
+        \textbf{Video, no audio} & & & \\
+        Average & 0.985552608626217  & 0.2455559533577817 & 0.0382156014086419 \\
+        Median  & 0.9910639794988954 & 0.2469094108184754 & 1.0495224726537987e-49 \\
+        \hline
+        \hline
+        \textbf{No video, audio} & & & \\
+        Average & 0.7047054527908376 & 0.1642110854920916 & 0.05488155260850076 \\
+        Median  & 0.7743757078053616 & 0.1759749377002492 & 2.5705208923537022e-87 \\
+        \hline
+        \hline
+        \textbf{No video, no audio} & & & \\
+        Average & 0.8508982500756426 & 0.20492332037463712 & 0.04328112347390702 \\
+        Median  & 0.8939252655352993 & 0.21414753850025312 & 7.476376446385691e-114 \\
+        \hline
+    \end{scriptsizetabular}
+    \caption{Results of a statistical analysis of the UDP stream.}
+    \label{table:stats}
+\end{table}
+
+From our results, we found that the entropy and variance on streams with the ROYBI device's camera uncovered was noticeably higher than those where the camera was covered. Furthermore, the $\chi^2$ p-values we found shows high confidence levels for our reported values. Given that we found repeating patterns from camera-covered streams, our statistical analysis shows the different distributions of bits between noisy data and consistent data; if the data was well encrypted, we would expect to find little difference in these values.
+
+Finally, we measure the bandwidth of the UDP stream under the same conditions and compare our results. As found in previous research by Valente et al. \cite{valente}, a traffic analysis may show information leakage depending on the differences in bandwidth and packet transmission rate. In Wireshark, we apply a filter to our packet capture to only show UDP packets sent from the ROYBI device to our mobile device. Then, with the \texttt{dpkt} Python package, we parse the payload and timestamp from the filtered packet capture, binn each packet by seconds from the timestamp of the first packet, and fit the data to form our graphs (fig. \ref{fig:plots}). We found that streams containing dynamic video data transmitted noticeably more packets and had higher bandwidth compared to streams where the device's camera was covered. Additionally, we found that the absence of dynamic audio increased the bandwidth and packet transmission rate while a noisy environment decreased them.
+
+\begin{figure}
+    \includegraphics[width=0.5\textwidth]{bandwidth.png}
+    \includegraphics[width=0.5\textwidth]{packettrans.png}
+    \caption{A measure of the UDP stream bandwidth and packet transmission rate under different conditions.}
+    \label{fig:plots}
+\end{figure}
 
 \subsection{ROYBI Robot Attack Vectors}
 
@@ -548,31 +622,19 @@ Our network analysis also reveals a lack of sufficient encryption for the data i
 Similar to the issue that the Amazon Echo Dot faces, if a ROYBI user's credentials are compromised, they are at risk of having their account breached. The ROYBI mobile application does not implement any further security measures for repeated login attempts, meaning their system is fully susceptible to credential stuffing attacks (fig. \ref{fig:stuffing}) \cite{stuffing}. Upon breach, attackers gain access to all profile information and can alter lesson schedules. Moreover, attackers can use the Video feature to access the camera and video feed as well as communicate directly with anyone present with the ROYBI device.
 
 \subsubsection{Spying}
-We cite Kerckhoffs' Principle \cite{kerckhoffs} to address the issues we found with ROYBI's Video feature; when designing a secure system, parties should rely on only its choice in cryptographic keys to maintain secrecy. In ROYBI's case, we found unencrypted UDP streams that contained video and audio data (fig. \ref{fig:unencrypted}). While the streaming protocol is unknown, in the event where an attacker discovers how these streams are processed, they will have full access to the video and audio between the two devices, presenting a severe security risk (fig. \ref{fig:evesdropper}).
+We cite Kerckhoffs' Principle \cite{kerckhoffs} to address the issues we found with ROYBI's Video feature; when designing a secure system, parties should rely on only its choice in cryptographic keys to maintain secrecy. In ROYBI's case, we found pooly encrypted UDP streams that contained video and audio data (fig. \ref{fig:unencrypted}). While the streaming protocol is unknown, in the event where an attacker discovers how these streams are processed, they will have full access to the video and audio between the two devices, presenting a severe security risk (fig. \ref{fig:evesdropper}).
 
 \begin{figure}
     \includegraphics[width=\textwidth]{evesdropper.jpg}
-    \caption{Adversaries on the same WiFi network as ROYBI have access to unencrypted camera and microphone feed data.}
+    \caption{Adversaries on the same WiFi network as ROYBI have access to poorly encrypted camera and microphone feed data.}
     \label{fig:evesdropper}
-\end{figure}
-
-\begin{figure}
-    \includegraphics[width=0.5\textwidth]{unencrypted1.png}
-    \includegraphics[width=0.5\textwidth]{unencrypted2.png}
-    \caption{A Wireshark packet capture shows that the ROYBI Robot sends a UDP stream with virtually no difference in payload contents when the camera is covered.}
-    \label{fig:unencrypted}
 \end{figure}
 
 % CONCLUSION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Conclusion}
 \label{ch:conclusion}
-Throughout this thesis, we have explored data privacy, security mechanisms, and consumer insights on smart devices designed for children. In developing a generalizable mental model of parents who allow their children to use smart devices, we are able to better understand the security practices these parents neglect, what concerns they have regarding cloud infrastructures, and what weaknesses must be strengthened for a more secure IoT environment.
-
-We were able to find security concerns and attack vectors by performing network analyses on the ROYBI Robot and the Amazon Echo Dot for Kids. From here, we develop a threat model to accompany the mental model. By comparing the two, we find solutions to the issues we found within the IoT framework. Finally, we aim to provide recommendations for IoT developers in order to ensure the security and privacy of consumers and their children.
-
+Based on our finding and survey data, we make some recommendations for IoT developers. We also delve into future work to further develop our models.
 \section{Recommendation}
-Based on our finding and survey data, we make some recommendations for IoT developers.
-
 \subsubsection{Preventing Automated Attacks}
 As we have observed from the Alexa mobile application, users are required to complete a CAPTCHA challenge after multiple failed log in attempts. This was not a security feature that was implemented in the ROYBI mobile application, and thus exposed ROYBI's system to large-scale automated attacks, such as credential stuffing, brute force attacks, and dictionary attacks \cite{brute}. In any service that requires logging in, we recommend that developers implement a similar mechanism to prevent attacks like these.
 
@@ -580,7 +642,7 @@ As we have observed from the Alexa mobile application, users are required to com
 Research has shown that MFA adds a nearly inpenetrable layer of security to an authentication system \cite{mfa}. While it can be hard to convince users to take an extra step before being able to log into their accounts, developers should at least provide an option to allow users to enable MFA. Ideally, this should be required for all users to ensure maximum security in the system; for example, the University of California has recently required all students and faculty to use Duo, a MFA service, to access their university accounts. 
 
 \subsubsection{Encrypt Everything}
-In our network analysis, we have found that the ROYBI device does not encrypt all of its outgoing packets. Currently, the payload of these packets contain only raw unencrypted data and holds no indicator of which media protocol is used to process it. However, in the event that an attacker gains knowledge of how the stream is processed, they are easily able to see and hear all video and audio data that the ROYBI device sends. We recommend that \textbf{all} network traffic should be encrypted using a strong encryption algorithm to prevent privacy breaches in the future.
+In our network analysis, we have found that the ROYBI device does not securely encrypt all of its outgoing packets. Currently, the payload of these packets contain similarly-patterned data and holds no indicator of which media protocol is used to process it. However, in the event that an attacker gains knowledge of how the stream is processed, they are easily able to see and hear all video and audio data that the ROYBI device sends. We recommend that \textbf{all} network traffic should be encrypted using a strong encryption algorithm to prevent privacy breaches in the future.
 
 \subsubsection{Data Collection Transparency}
 We have found in our survey data that many consumers are often reluctant in using smart devices because of a lack of understanding in what data is collected and how it is stored. Prior research has found that the vast majority of people do not read privacy policies at all \cite{privacypolicy}, so developers can reasonably expect that users are not fully aware of any data collection occurring. To remedy this problem, developers should take more initiative in informing users of their data collection methods. 
@@ -591,6 +653,13 @@ As IoT is still a growing industry, there are still more vectors to explore with
 We also aim to further diversify our survey participants. Most of our participants were contacted through word of mouth or chosen from an existing subject pool, courtesy of the Baby Lab at UCSC. By reaching out to a wider variety of people from different background, we can form a more thoroughly developed mental model for parents and IoT devices, which in turn gives us a better look at what recommendations to make for developers.
 
 Instead of a survey, our original plan was to interview parents and children in-person. In this setting, we also allow the child to interact with the devices. This method of data collection should have provided parents with more insight on how these devices work and provided us with the child's viewpoints as well. While in-person data can be more valuable to our research, we unfortunately could not conduct these interviews due to the COVID-19 pandemic. In the future, we will have the ability to look into children's opinions on the matter as well. From here, we can also build a mental model for children in addition to the parents.
+
+%Finally, although it is likely that these packets are unencrypted, we did not fully delve into the UDP streams captured from the ROYBI Robot in this paper. In future developments, there are various ways to analyze this data. For example, we can perform statistical analysis on the differentiation between like-sized packets in order to measure the randomness of the data. We can also attempt to encode the raw data by adding media file headers to try to find how the devices process this data. With further analysis, we can better understand the extent of encryption, if any at all, used in the device's backend.
+
+\section{Conclusion}
+Throughout this thesis, we have explored data privacy, security mechanisms, and consumer insights on smart devices designed for children. In developing a generalizable mental model of parents who allow their children to use smart devices, we are able to better understand the security practices these parents neglect, what concerns they have regarding cloud infrastructures, and what weaknesses must be strengthened for a more secure IoT environment.
+
+We were able to find security concerns and attack vectors by performing network analyses on the ROYBI Robot and the Amazon Echo Dot for Kids. From here, we develop a threat model to accompany the mental model. By comparing the two, we find solutions to the issues we found within the IoT framework. Finally, we aim to provide recommendations for IoT developers in order to ensure the security and privacy of consumers and their children.
 
 % BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \nocite{*}
